@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TooManyRules.BusinessLayer;
+using TooManyRules.DataAccess;
 
 namespace TooManyRules.WebApi
 {
@@ -41,6 +43,9 @@ namespace TooManyRules.WebApi
         {
             // Add framework services.
             services.AddMvc();
+
+            services.ConfigureBusinessLayer();
+            services.ConfigureDataAccess();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

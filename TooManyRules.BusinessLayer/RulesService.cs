@@ -14,53 +14,17 @@
 // * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ********************************************************************************************************************************/
 
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using TooManyRules.BusinessLayer;
-using TooManyRules.Models;
+using TooManyRules.DataAccess;
 
-namespace TooManyRules.WebApi.Controllers
+namespace TooManyRules.BusinessLayer
 {
-    [Route("api/[controller]")]
-    public class RulesController : Controller
+    internal class RulesService : IRulesService
     {
-        private readonly IRulesService rulesService;
+        private readonly IRulesRepository rulesRepository;
 
-        public RulesController(IRulesService rulesService)
+        public RulesService(IRulesRepository rulesRepository)
         {
-            this.rulesService = rulesService;
-        }
-
-        // GET api/rules
-        [HttpGet]
-        public IEnumerable<Rule> Get()
-        {
-            return new[] {new Rule {Id = 1}};
-        }
-
-        // GET api/rules/5
-        [HttpGet("{id}")]
-        public Rule Get(int id)
-        {
-            return new Rule {Id = 1};
-        }
-
-        // POST api/rules
-        [HttpPost]
-        public void Post([FromBody] Rule value)
-        {
-        }
-
-        // PUT api/rules/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Rule value)
-        {
-        }
-
-        // DELETE api/rules/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            this.rulesRepository = rulesRepository;
         }
     }
 }

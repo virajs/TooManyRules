@@ -1,4 +1,4 @@
-﻿// /********************************************************************************************************************************
+// /********************************************************************************************************************************
 // * Copyright 2017 Ryan Caille
 // * 
 // * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
@@ -14,52 +14,14 @@
 // * IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ********************************************************************************************************************************/
 
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using TooManyRules.BusinessLayer;
-using TooManyRules.Models;
+using Xunit;
 
-namespace TooManyRules.WebApi.Controllers
+namespace TooManyRules.Tests
 {
-    [Route("api/[controller]")]
-    public class RulesController : Controller
+    public class RuleTests
     {
-        private readonly IRulesService rulesService;
-
-        public RulesController(IRulesService rulesService)
-        {
-            this.rulesService = rulesService;
-        }
-
-        // GET api/rules
-        [HttpGet]
-        public IEnumerable<Rule> Get()
-        {
-            return new[] {new Rule {Id = 1}};
-        }
-
-        // GET api/rules/5
-        [HttpGet("{id}")]
-        public Rule Get(int id)
-        {
-            return new Rule {Id = 1};
-        }
-
-        // POST api/rules
-        [HttpPost]
-        public void Post([FromBody] Rule value)
-        {
-        }
-
-        // PUT api/rules/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Rule value)
-        {
-        }
-
-        // DELETE api/rules/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [Fact]
+        public void Test1()
         {
         }
     }
