@@ -31,3 +31,10 @@
 # Debug files
 *.dSYM/
 *.su
+/.vs
+/TooManyRules.Models/bin/Debug/netcoreapp1.0
+/TooManyRules.Models/obj
+/TooManyRules.WebApi/bin/Debug/netcoreapp1.1
+/TooManyRules.WebApi/obj/Debug/netcoreapp1.1
+/TooManyRules.WebApi/obj
+*.user
