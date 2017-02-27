@@ -12,11 +12,34 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using TooManyRules.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace TooManyRules.DataAccess
+namespace TooManyRules.Models.Migrations
 {
-    public interface IRulesRepository : IBaseRepository<Rule>
+    [DbContext(typeof(TooManyRulesContext))]
+    internal class TooManyRulesContextModelSnapshot : ModelSnapshot
     {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("TooManyRules.Models.Rule", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(64);
+
+                b.HasKey("Id");
+
+                b.ToTable("Rules");
+            });
+        }
     }
 }

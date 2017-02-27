@@ -12,11 +12,17 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using TooManyRules.Models;
-
 namespace TooManyRules.DataAccess
 {
-    public interface IRulesRepository : IBaseRepository<Rule>
+    public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
+        where T : class
     {
+        void Add(T entity);
+
+        void Edit(T entity);
+
+        void Delete(T entity);
+
+        void Save();
     }
 }
