@@ -15,7 +15,7 @@
 namespace TooManyRules.DataAccess
 {
     public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
-        where T : class
+        where T : class 
     {
         void Add(T entity);
 

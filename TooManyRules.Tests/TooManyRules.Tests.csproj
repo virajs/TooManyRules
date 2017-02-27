@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +16,17 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestObjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TooManyRules.BusinessLayer\TooManyRules.BusinessLayer.csproj" />
+    <ProjectReference Include="..\TooManyRules.DataAccess\TooManyRules.DataAccess.csproj" />
+    <ProjectReference Include="..\TooManyRules.Models\TooManyRules.Models.csproj" />
+    <ProjectReference Include="..\TooManyRules.WebApi\TooManyRules.WebApi.csproj" />
   </ItemGroup>
 
 </Project>
