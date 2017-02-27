@@ -12,21 +12,37 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
+using System;
+using Microsoft.EntityFrameworkCore;
+using TooManyRules.BusinessLayer;
+using TooManyRules.DataAccess;
 using TooManyRules.Models;
+using TooManyRules.WebApi.Controllers;
 
-namespace TooManyRules.BusinessLayer
+namespace TooManyRules.Tests.TestObjects
 {
-    public interface IRulesService
+    public class ControllerFactory : IDisposable
     {
-        IList<Rule> GetAll();
+        private readonly TooManyRulesContext context;
 
-        Rule Get(int id);
+        public ControllerFactory()
+        {
+            var dbName = Guid.NewGuid().ToString();
+            var options = new DbContextOptionsBuilder<TooManyRulesContext>()
+                .UseInMemoryDatabase(dbName)
+                .Options;
 
-        void Add(Rule value);
+            context = new TooManyRulesContext(options);
+            var repository = new RulesRepository(context);
+            var service = new RulesService(repository);
+            RulesController = new RulesController(service);
+        }
 
-        void Edit(int id, Rule value);
+        public RulesController RulesController { get; }
 
-        void Delete(int id);
+        public void Dispose()
+        {
+            context?.Dispose();
+        }
     }
 }

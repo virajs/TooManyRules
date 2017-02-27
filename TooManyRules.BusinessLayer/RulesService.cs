@@ -44,9 +44,12 @@ namespace TooManyRules.BusinessLayer
             rulesRepository.Save();
         }
 
-        public void Edit(Rule value)
+        public void Edit(int id, Rule value)
         {
-            rulesRepository.Edit(value);
+            var entity = Get(id);
+            entity.Name = value.Name;
+
+            rulesRepository.Edit(entity);
             rulesRepository.Save();
         }
 

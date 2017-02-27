@@ -54,7 +54,7 @@ namespace TooManyRules.WebApi.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Rule value)
         {
-            rulesService.Edit(value);
+            rulesService.Edit(id, value);
         }
 
         // DELETE api/rules/5

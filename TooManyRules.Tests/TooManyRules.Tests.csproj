@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestObjects\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TooManyRules.BusinessLayer\TooManyRules.BusinessLayer.csproj" />
     <ProjectReference Include="..\TooManyRules.DataAccess\TooManyRules.DataAccess.csproj" />
     <ProjectReference Include="..\TooManyRules.Models\TooManyRules.Models.csproj" />
