@@ -22,7 +22,12 @@ namespace TooManyRules.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(64)]
+        public string Namespace { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string Definition { get; set; }
     }
 }

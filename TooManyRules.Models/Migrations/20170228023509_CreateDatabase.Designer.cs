@@ -8,8 +8,8 @@ using TooManyRules.Models;
 namespace TooManyRules.Models.Migrations
 {
     [DbContext(typeof(TooManyRulesContext))]
-    [Migration("20170227001150_Initial")]
-    partial class Initial
+    [Migration("20170228023509_CreateDatabase")]
+    partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,9 +22,14 @@ namespace TooManyRules.Models.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Definition")
+                        .IsRequired();
+
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64);
+                        .IsRequired();
+
+                    b.Property<string>("Namespace")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
