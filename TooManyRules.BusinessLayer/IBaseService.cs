@@ -12,19 +12,23 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TooManyRules.DataAccess
+namespace TooManyRules.BusinessLayer
 {
-    public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
-        where T : class 
+    public interface IBaseService<T, TKey>
+        where T : class
+        where TKey : struct
     {
-        void Add(T entity);
+        Task<IList<T>> GetAll();
 
-        void Edit(T entity);
+        Task<T> Get(TKey id);
 
-        void Delete(T entity);
+        Task<TKey> Add(T value);
 
-        Task Save();
+        Task Edit(TKey id, T value);
+
+        Task Delete(TKey id);
     }
 }

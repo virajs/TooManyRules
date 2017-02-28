@@ -12,8 +12,10 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TooManyRules.BusinessLayer;
 using TooManyRules.Models;
 
@@ -22,46 +24,109 @@ namespace TooManyRules.WebApi.Controllers
     [Route("api/[controller]")]
     public class RulesController : Controller
     {
-        private readonly IRulesService rulesService;
+        private readonly IRulesService service;
+        private readonly ILogger log;
 
-        public RulesController(IRulesService rulesService)
+        public RulesController(IRulesService service, ILogger log)
         {
-            this.rulesService = rulesService;
+            this.service = service;
+            this.log = log;
         }
 
         // GET api/rules
         [HttpGet]
-        public IEnumerable<Rule> Get()
+        public async Task<IActionResult> Get()
         {
-            return rulesService.GetAll();
+            try
+            {
+                return Ok(await service.GetAll());
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(e.HResult), e, "");
+            }
+
+            return StatusCode(500);
         }
 
         // GET api/rules/5
         [HttpGet("{id}")]
-        public Rule Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return rulesService.Get(id);
+            try
+            {
+                return Ok(await service.Get(id));
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(e.HResult), e, "");
+            }
+
+            return StatusCode(500);
         }
 
         // POST api/rules
         [HttpPost]
-        public void Post([FromBody] Rule value)
+        public async Task<IActionResult> Post([FromBody] Rule value)
         {
-            rulesService.Add(value);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var key = await service.Add(value);
+
+                    return Created($"api/rules/{key}", key);
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(e.HResult), e, "");
+            }
+
+            return StatusCode(500);
         }
 
         // PUT api/rules/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Rule value)
+        public async Task<IActionResult> Put(int id, [FromBody] Rule value)
         {
-            rulesService.Edit(id, value);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await service.Edit(id, value);
+
+                    return NoContent();
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(e.HResult), e, "");
+            }
+
+            return StatusCode(500);
         }
 
         // DELETE api/rules/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            rulesService.Delete(id);
+            try
+            {
+                await service.Delete(id);
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(e.HResult), e, "");
+            }
+
+            return StatusCode(500);
         }
     }
 }

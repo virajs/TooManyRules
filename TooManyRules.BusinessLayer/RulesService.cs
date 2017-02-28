@@ -13,7 +13,8 @@
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TooManyRules.DataAccess;
 using TooManyRules.Models;
 
@@ -28,38 +29,40 @@ namespace TooManyRules.BusinessLayer
             this.rulesRepository = rulesRepository;
         }
 
-        public IList<Rule> GetAll()
+        public async Task<IList<Rule>> GetAll()
         {
-            return rulesRepository.GetAll().ToList();
+            return await rulesRepository.GetAll().ToListAsync();
         }
 
-        public Rule Get(int id)
+        public async Task<Rule> Get(int id)
         {
-            return rulesRepository.FindBy(r => r.Id == id).FirstOrDefault();
+            return await rulesRepository.FindBy(r => r.Id == id).FirstOrDefaultAsync();
         }
 
-        public void Add(Rule value)
+        public async Task<int> Add(Rule value)
         {
             rulesRepository.Add(value);
-            rulesRepository.Save();
+            await rulesRepository.Save();
+
+            return value.Id;
         }
 
-        public void Edit(int id, Rule value)
+        public async Task Edit(int id, Rule value)
         {
-            var entity = Get(id);
+            var entity = await Get(id);
             entity.Name = value.Name;
 
             rulesRepository.Edit(entity);
-            rulesRepository.Save();
+            await rulesRepository.Save();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var entity = Get(id);
+            var entity = await Get(id);
             if (entity != null)
             {
                 rulesRepository.Delete(entity);
-                rulesRepository.Save();
+                await rulesRepository.Save();
             }
         }
     }

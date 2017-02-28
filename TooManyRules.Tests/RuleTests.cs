@@ -12,8 +12,10 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using TooManyRules.Models;
 using TooManyRules.Tests.TestObjects;
 using Xunit;
@@ -22,124 +24,127 @@ namespace TooManyRules.Tests
 {
     public class RuleTests
     {
+        private const string Namespace = "TooManyRules";
+        private const string Name = "My First Rule";
+        private const string Definition = "{}";
+
+        private static Rule CreateTestRule()
+        {
+            return new Rule {Namespace = Namespace, Name = Name, Definition = Definition};
+        }
+
         [Fact]
-        public void EmptyTableShouldReturnNoRules()
+        public async Task AddingANewRuleShouldSucceed()
         {
             // Arrange
             using (var factory = new ControllerFactory())
             {
+                var expectedRule = CreateTestRule();
+                var controller = factory.RulesController;
+
                 // Act
-                var rules = factory.RulesController.Get();
+                var result = await controller.Post(expectedRule);
 
                 // Assert
-                Assert.NotNull(rules);
-                Assert.Empty(rules);
+                var which = result.Should().NotBeNull()
+                    .And.BeOfType<CreatedResult>()
+                    .Which;
+
+                which.Value.Should().BeOfType<int>().And.NotBeNull().And.NotBe(0);
+                which.Location.Should().Be($"api/rules/{which.Value}");
             }
         }
 
         [Fact]
-        public void AddingANewRuleShouldSucceed()
+        public async Task DeletingARuleShouldSucceed()
         {
             // Arrange
             using (var factory = new ControllerFactory())
             {
-                var expectedRule = new Rule { Id = 1, Name = "My First Rules" };
+                var rule = CreateTestRule();
                 var controller = factory.RulesController;
 
+                var id = (int) ((CreatedResult) await controller.Post(rule)).Value;
+
                 // Act
-                controller.Post(expectedRule);
+                var result = await controller.Delete(id);
 
                 // Assert
-                var rules = controller.Get();
+                result.Should().NotBeNull()
+                    .And.BeOfType<NoContentResult>();
 
-                Assert.NotNull(rules);
-                Assert.NotEmpty(rules);
-                Assert.Equal(1, rules.Count());
-
-                var actualRule = controller.Get().First();
-
-                Assert.NotNull(actualRule);
-                Assert.Equal(expectedRule.Id, actualRule.Id);
-                Assert.Equal(expectedRule.Name, actualRule.Name, StringComparer.Ordinal);
+                var getResult = await controller.Get();
+                getResult.Should().NotBeNull()
+                    .And.BeOfType<OkObjectResult>()
+                    .Which.Value.As<IList<Rule>>().Should().BeEmpty();
             }
         }
 
         [Fact]
-        public void GettingARuleByIdShouldSucceed()
+        public async Task EmptyTableShouldReturnNoRules()
         {
             // Arrange
             using (var factory = new ControllerFactory())
             {
-                const int id = 1;
-                var expectedRule = new Rule { Id = id, Name = "My First Rules" };
-                var controller = factory.RulesController;
-
                 // Act
-                controller.Post(expectedRule);
+                var result = await factory.RulesController.Get();
 
                 // Assert
-                var actualRule = controller.Get(id);
-
-                Assert.NotNull(actualRule);
-                Assert.Equal(expectedRule.Id, actualRule.Id);
-                Assert.Equal(expectedRule.Name, actualRule.Name, StringComparer.Ordinal);
+                result.Should().NotBeNull()
+                    .And.BeOfType<OkObjectResult>()
+                    .Which.Value.As<IList<Rule>>().Should().BeEmpty();
             }
         }
 
         [Fact]
-        public void UpdatingAnExistingRuleShouldSucceed()
+        public async Task GettingARuleByIdShouldSucceed()
         {
             // Arrange
             using (var factory = new ControllerFactory())
             {
-                const int id = 1;
-
-                var initialRule = new Rule {Id = id, Name = "Another Rule"};
+                var expectedRule = CreateTestRule();
                 var controller = factory.RulesController;
 
-                controller.Post(initialRule);
+                var id = (int) ((CreatedResult) await controller.Post(expectedRule)).Value;
 
-                var expectedRule = new Rule {Name = "Updating Rule!"};
+                expectedRule.Id = id;
 
                 // Act
-                controller.Put(id, expectedRule);
+                var result = await controller.Get(id);
 
                 // Assert
-                var rules = controller.Get();
-
-                Assert.NotNull(rules);
-                Assert.NotEmpty(rules);
-                Assert.Equal(1, rules.Count());
-
-                var actualRule = controller.Get().First();
-
-                Assert.NotNull(actualRule);
-                Assert.Equal(id, actualRule.Id);
-                Assert.Equal(expectedRule.Name, actualRule.Name, StringComparer.Ordinal);
+                result.Should().NotBeNull()
+                    .And.BeOfType<OkObjectResult>()
+                    .Which.Value.ShouldBeEquivalentTo(expectedRule);
             }
         }
 
         [Fact]
-        public void DeletingARuleShouldSucceed()
+        public async Task UpdatingAnExistingRuleShouldSucceed()
         {
             // Arrange
             using (var factory = new ControllerFactory())
             {
-                const int id = 1;
-
-                var initialRule = new Rule { Id = id, Name = "Another Rule" };
+                var initialRule = CreateTestRule();
                 var controller = factory.RulesController;
 
-                controller.Post(initialRule);
+                var id = (int) ((CreatedResult) await controller.Post(initialRule)).Value;
+
+                var updateRule = new Rule {Name = "Updating Rule!"};
+                var expectedRule = initialRule;
+                expectedRule.Name = updateRule.Name;
 
                 // Act
-                controller.Delete(id);
+                var putResult = await controller.Put(id, updateRule);
 
                 // Assert
-                var rules = controller.Get();
+                putResult.Should().BeOfType<NoContentResult>();
 
-                Assert.NotNull(rules);
-                Assert.Empty(rules);
+                var result = await controller.Get(id);
+
+                result.Should().NotBeNull()
+                    .And.BeOfType<OkObjectResult>()
+                    .Which.Value.ShouldBeEquivalentTo(expectedRule);
             }
         }
     }

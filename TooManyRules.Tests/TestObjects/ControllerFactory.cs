@@ -14,6 +14,8 @@
 
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using TooManyRules.BusinessLayer;
 using TooManyRules.DataAccess;
 using TooManyRules.Models;
@@ -24,9 +26,11 @@ namespace TooManyRules.Tests.TestObjects
     public class ControllerFactory : IDisposable
     {
         private readonly TooManyRulesContext context;
+        private readonly Mock<ILogger> mockLogger;
 
         public ControllerFactory()
         {
+            mockLogger = new Mock<ILogger>();
             var dbName = Guid.NewGuid().ToString();
             var options = new DbContextOptionsBuilder<TooManyRulesContext>()
                 .UseInMemoryDatabase(dbName)
@@ -35,7 +39,8 @@ namespace TooManyRules.Tests.TestObjects
             context = new TooManyRulesContext(options);
             var repository = new RulesRepository(context);
             var service = new RulesService(repository);
-            RulesController = new RulesController(service);
+
+            RulesController = new RulesController(service, mockLogger.Object);
         }
 
         public RulesController RulesController { get; }

@@ -15,6 +15,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace TooManyRules.DataAccess
@@ -57,9 +58,9 @@ namespace TooManyRules.DataAccess
             Context.Set<T>().Remove(entity);
         }
 
-        public void Save()
+        public async Task Save()
         {
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
 
         public void Dispose()
