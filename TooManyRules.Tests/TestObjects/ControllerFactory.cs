@@ -18,35 +18,50 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using TooManyRules.BusinessLayer;
 using TooManyRules.DataAccess;
+using TooManyRules.Engine;
 using TooManyRules.Models;
 using TooManyRules.WebApi.Controllers;
 
 namespace TooManyRules.Tests.TestObjects
 {
-    public class ControllerFactory : IDisposable
+    internal class ControllerFactory : IDisposable
     {
         private readonly TooManyRulesContext context;
+        private readonly Mock<ILogger<RulesController>> mockLogger = new Mock<ILogger<RulesController>>();
 
         public ControllerFactory()
         {
-            var mockLogger = new Mock<ILogger<RulesController>>();
             var dbName = Guid.NewGuid().ToString();
             var options = new DbContextOptionsBuilder<TooManyRulesContext>()
                 .UseInMemoryDatabase(dbName)
                 .Options;
 
             context = new TooManyRulesContext(options);
-            var repository = new RulesRepository(context);
-            var service = new RulesService(repository);
-
-            RulesController = new RulesController(service, mockLogger.Object);
         }
-
-        public RulesController RulesController { get; }
 
         public void Dispose()
         {
             context?.Dispose();
+        }
+
+        public RulesRepository CreateRulesRepository()
+        {
+            return new RulesRepository(context);
+        }
+
+        public RulesService CreateRulesService()
+        {
+            return new RulesService(CreateRulesRepository());
+        }
+
+        public RulesController CreateRulesController()
+        {
+            return new RulesController(CreateRulesService(), mockLogger.Object);
+        }
+
+        public RuleEngine CreateRuleEngine()
+        {
+            return new RuleEngine(CreateRulesRepository());
         }
     }
 }

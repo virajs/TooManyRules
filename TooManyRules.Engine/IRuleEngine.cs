@@ -1,4 +1,4 @@
-﻿// Copyright 2017 Ryan Caille
+// Copyright 2017 Ryan Caille
 //  
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 // files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
@@ -12,19 +12,12 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Threading.Tasks;
-
-namespace TooManyRules.DataAccess
+namespace TooManyRules.Engine
 {
-    public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
-        where T : class
+    public interface IRuleEngine
     {
-        void Add(T entity);
+        EvaluationResult EvaluateRules(string ns, object input);
 
-        void Edit(T entity);
-
-        void Delete(T entity);
-
-        Task Save();
+        EvaluationResult EvaluateRule(string ns, string name, object input);
     }
 }

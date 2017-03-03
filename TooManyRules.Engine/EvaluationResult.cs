@@ -12,19 +12,10 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Threading.Tasks;
-
-namespace TooManyRules.DataAccess
+namespace TooManyRules.Engine
 {
-    public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
-        where T : class
+    public class EvaluationResult
     {
-        void Add(T entity);
-
-        void Edit(T entity);
-
-        void Delete(T entity);
-
-        Task Save();
+        public bool Success { get; set; }
     }
 }

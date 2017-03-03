@@ -12,19 +12,40 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Threading.Tasks;
+using System;
+using System.Linq;
+using TooManyRules.DataAccess;
 
-namespace TooManyRules.DataAccess
+namespace TooManyRules.Engine
 {
-    public interface IBaseRepository<T> : IReadOnlyBaseRepository<T>
-        where T : class
+    internal class RuleEngine : IRuleEngine
     {
-        void Add(T entity);
+        private readonly IRulesRepository rulesRepository;
 
-        void Edit(T entity);
+        public RuleEngine(IRulesRepository rulesRepository)
+        {
+            this.rulesRepository = rulesRepository;
+        }
 
-        void Delete(T entity);
+        public EvaluationResult EvaluateRules(string ns, object input)
+        {
+            return new EvaluationResult();
+        }
 
-        Task Save();
+        public EvaluationResult EvaluateRule(string ns, string name, object input)
+        {
+            var result = new EvaluationResult();
+
+            var rule = rulesRepository.FindBy(r =>
+                r.Namespace.Equals(ns, StringComparison.OrdinalIgnoreCase) &&
+                r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            if (rule != null)
+            {
+                result.Success = true;
+            }
+
+            return result;
+        }
     }
 }

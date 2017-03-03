@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooManyRules.Engine", "TooManyRules.Engine\TooManyRules.Engine.csproj", "{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,18 @@ Global
 		{C4E964B1-9BFE-44F7-BE33-9CF8E3FA8BBB}.Release|x64.Build.0 = Release|x64
 		{C4E964B1-9BFE-44F7-BE33-9CF8E3FA8BBB}.Release|x86.ActiveCfg = Release|x86
 		{C4E964B1-9BFE-44F7-BE33-9CF8E3FA8BBB}.Release|x86.Build.0 = Release|x86
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|x64.ActiveCfg = Debug|x64
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|x64.Build.0 = Debug|x64
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|x86.ActiveCfg = Debug|x86
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Debug|x86.Build.0 = Debug|x86
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|x64.ActiveCfg = Release|x64
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|x64.Build.0 = Release|x64
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|x86.ActiveCfg = Release|x86
+		{A8A2F5C0-4AF8-4148-8467-E93DD2BF160B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

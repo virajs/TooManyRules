@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="Moq" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
@@ -22,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TooManyRules.BusinessLayer\TooManyRules.BusinessLayer.csproj" />
     <ProjectReference Include="..\TooManyRules.DataAccess\TooManyRules.DataAccess.csproj" />
+    <ProjectReference Include="..\TooManyRules.Engine\TooManyRules.Engine.csproj" />
     <ProjectReference Include="..\TooManyRules.Models\TooManyRules.Models.csproj" />
     <ProjectReference Include="..\TooManyRules.WebApi\TooManyRules.WebApi.csproj" />
   </ItemGroup>

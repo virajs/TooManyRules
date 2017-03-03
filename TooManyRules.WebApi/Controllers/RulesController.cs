@@ -24,8 +24,8 @@ namespace TooManyRules.WebApi.Controllers
     [Route("api/[controller]")]
     public class RulesController : Controller
     {
-        private readonly IRulesService service;
         private readonly ILogger<RulesController> log;
+        private readonly IRulesService service;
 
         public RulesController(IRulesService service, ILogger<RulesController> log)
         {

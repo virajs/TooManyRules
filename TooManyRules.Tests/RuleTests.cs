@@ -40,7 +40,7 @@ namespace TooManyRules.Tests
             using (var factory = new ControllerFactory())
             {
                 var expectedRule = CreateTestRule();
-                var controller = factory.RulesController;
+                var controller = factory.CreateRulesController();
 
                 // Act
                 var result = await controller.Post(expectedRule);
@@ -62,7 +62,7 @@ namespace TooManyRules.Tests
             using (var factory = new ControllerFactory())
             {
                 var rule = CreateTestRule();
-                var controller = factory.RulesController;
+                var controller = factory.CreateRulesController();
 
                 var id = (int) ((CreatedResult) await controller.Post(rule)).Value;
 
@@ -86,8 +86,10 @@ namespace TooManyRules.Tests
             // Arrange
             using (var factory = new ControllerFactory())
             {
+                var controller = factory.CreateRulesController();
+
                 // Act
-                var result = await factory.RulesController.Get();
+                var result = await controller.Get();
 
                 // Assert
                 result.Should().NotBeNull()
@@ -103,7 +105,7 @@ namespace TooManyRules.Tests
             using (var factory = new ControllerFactory())
             {
                 var expectedRule = CreateTestRule();
-                var controller = factory.RulesController;
+                var controller = factory.CreateRulesController();
 
                 var id = (int) ((CreatedResult) await controller.Post(expectedRule)).Value;
 
@@ -126,7 +128,7 @@ namespace TooManyRules.Tests
             using (var factory = new ControllerFactory())
             {
                 var initialRule = CreateTestRule();
-                var controller = factory.RulesController;
+                var controller = factory.CreateRulesController();
 
                 var id = (int) ((CreatedResult) await controller.Post(initialRule)).Value;
 
