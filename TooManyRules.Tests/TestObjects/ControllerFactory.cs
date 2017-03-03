@@ -26,11 +26,10 @@ namespace TooManyRules.Tests.TestObjects
     public class ControllerFactory : IDisposable
     {
         private readonly TooManyRulesContext context;
-        private readonly Mock<ILogger> mockLogger;
 
         public ControllerFactory()
         {
-            mockLogger = new Mock<ILogger>();
+            var mockLogger = new Mock<ILogger<RulesController>>();
             var dbName = Guid.NewGuid().ToString();
             var options = new DbContextOptionsBuilder<TooManyRulesContext>()
                 .UseInMemoryDatabase(dbName)
