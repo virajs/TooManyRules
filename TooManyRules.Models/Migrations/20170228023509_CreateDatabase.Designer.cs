@@ -28,7 +28,7 @@ namespace TooManyRules.Models.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Namespace")
+                    b.Property<string>("Name")
                         .IsRequired();
 
                     b.HasKey("Id");

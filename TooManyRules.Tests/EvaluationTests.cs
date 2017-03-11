@@ -45,7 +45,6 @@ namespace TooManyRules.Tests
 
                 await service.Add(new Rule
                 {
-                    Namespace = "sys",
                     Name = "ThisIsARule",
                     Definition = JsonConvert.SerializeObject(new {})
                 });

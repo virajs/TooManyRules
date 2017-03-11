@@ -12,24 +12,44 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using TooManyRules.Models;
 
-namespace TooManyRules.Models
+namespace TooManyRules.BusinessLayer
 {
-    public class Rule
+    internal class PoliciesService : IPoliciesService
     {
-        [Key]
-        public int Id { get; set; }
+        public Task<IList<Policy>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
 
-        [Required]
-        public int PolicyId { get; set; }
+        public Task<Policy> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-        public Policy Policy { get; set; }
+        public Task<int> Add(Policy value)
+        {
+            throw new NotImplementedException();
+        }
 
-        [Required]
-        public string Name { get; set; }
+        public Task Edit(int id, Policy value)
+        {
+            throw new NotImplementedException();
+        }
 
-        [Required]
-        public string Definition { get; set; }
+        public Task Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

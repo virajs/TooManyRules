@@ -37,7 +37,6 @@ namespace TooManyRules.Engine
             var result = new EvaluationResult();
 
             var rule = rulesRepository.FindBy(r =>
-                r.Namespace.Equals(ns, StringComparison.OrdinalIgnoreCase) &&
                 r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
             if (rule != null)

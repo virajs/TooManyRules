@@ -12,24 +12,13 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.ComponentModel.DataAnnotations;
+using System;
+using TooManyRules.Models;
 
-namespace TooManyRules.Models
+namespace TooManyRules.BusinessLayer
 {
-    public class Rule
+    public interface IPoliciesService : IBaseService<Policy, int>, IDisposable
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public int PolicyId { get; set; }
-
-        public Policy Policy { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Definition { get; set; }
+        
     }
 }

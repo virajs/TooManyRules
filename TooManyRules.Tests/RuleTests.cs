@@ -30,7 +30,7 @@ namespace TooManyRules.Tests
 
         private static Rule CreateTestRule()
         {
-            return new Rule {Namespace = Namespace, Name = Name, Definition = Definition};
+            return new Rule { Name = Name, Definition = Definition};
         }
 
         [Fact]
