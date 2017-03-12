@@ -13,11 +13,14 @@
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using TooManyRules.Models;
 
-namespace TooManyRules.DataAccess
+namespace TooManyRules.Tests
 {
-    public interface IPoliciesRepository : IBaseRepository<Policy>, IDisposable
+    public class PasswordPolicyScenarioTests : IDisposable
     {
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+        }
     }
 }

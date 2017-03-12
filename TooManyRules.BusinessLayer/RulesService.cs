@@ -50,7 +50,7 @@ namespace TooManyRules.BusinessLayer
         public async Task Edit(int id, Rule value)
         {
             var entity = await Get(id);
-            entity.Name = value.Name;
+            entity.Definition = value.Definition;
 
             rulesRepository.Edit(entity);
             await rulesRepository.Save();

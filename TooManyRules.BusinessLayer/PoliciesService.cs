@@ -14,42 +14,71 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TooManyRules.DataAccess;
 using TooManyRules.Models;
 
 namespace TooManyRules.BusinessLayer
 {
     internal class PoliciesService : IPoliciesService
     {
+        private readonly IPoliciesRepository policiesRepository;
+
+        public PoliciesService(IPoliciesRepository policiesRepository)
+        {
+            this.policiesRepository = policiesRepository;
+        }
+
         public Task<IList<Policy>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Policy> Get(int id)
+        public async Task<IList<Policy>> GetAllNamesWithIds()
         {
-            throw new NotImplementedException();
+            return await policiesRepository.GetAll()
+                .Select(p => new Policy {Id = p.Id, Name = p.Name})
+                .ToListAsync();
         }
 
-        public Task<int> Add(Policy value)
+        public async Task<Policy> Get(int id)
         {
-            throw new NotImplementedException();
+            return await policiesRepository.FindBy(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task Edit(int id, Policy value)
+        public async Task<int> Add(Policy value)
         {
-            throw new NotImplementedException();
+            policiesRepository.Add(value);
+            await policiesRepository.Save();
+
+            return value.Id;
         }
 
-        public Task Delete(int id)
+        public async Task Edit(int id, Policy value)
         {
-            throw new NotImplementedException();
+            var entity = await Get(id);
+            entity.Definition = value.Definition;
+
+            policiesRepository.Edit(entity);
+            await policiesRepository.Save();
+        }
+
+        public async Task Delete(int id)
+        {
+            var entity = await Get(id);
+            if (entity != null)
+            {
+                policiesRepository.Delete(entity);
+                await policiesRepository.Save();
+            }
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            policiesRepository?.Dispose();
         }
     }
 }

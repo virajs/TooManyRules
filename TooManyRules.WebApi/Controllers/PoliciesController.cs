@@ -12,13 +12,43 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using TooManyRules.BusinessLayer;
+using TooManyRules.Models;
 
 namespace TooManyRules.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class PoliciesController : Controller
+    public class PoliciesController : BaseController
     {
-        
+        private readonly ILogger<PoliciesController> log;
+        private readonly IPoliciesService service;
+
+        public PoliciesController(IPoliciesService service, ILogger<PoliciesController> log)
+        {
+            this.service = service;
+            this.log = log;
+        }
+
+        protected override ILogger Log => log;
+
+        [HttpGet]
+        public async Task<IActionResult> GetPolicies() => await Ok(service.GetAllNamesWithIds);
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPolicy(int id) => await Ok(async () => await service.Get(id));
+
+        [HttpPost]
+        public async Task<IActionResult> AddPolicy([FromBody] Policy value) => await Created(service.Add, value, "api/policies");
+
+        // PUT api/rules/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] Policy value) => await NoContent(service.Edit, id, value);
+
+        // DELETE api/rules/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) => await NoContent(service.Delete, id);
     }
 }

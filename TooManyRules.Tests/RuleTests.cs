@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TooManyRules.Models;
 using TooManyRules.Tests.TestObjects;
 using Xunit;
@@ -24,13 +25,12 @@ namespace TooManyRules.Tests
 {
     public class RuleTests
     {
-        private const string Namespace = "TooManyRules";
         private const string Name = "My First Rule";
         private const string Definition = "{}";
 
         private static Rule CreateTestRule()
         {
-            return new Rule { Name = Name, Definition = Definition};
+            return new Rule {Name = Name, Definition = Definition};
         }
 
         [Fact]
@@ -132,9 +132,15 @@ namespace TooManyRules.Tests
 
                 var id = (int) ((CreatedResult) await controller.Post(initialRule)).Value;
 
-                var updateRule = new Rule {Name = "Updating Rule!"};
-                var expectedRule = initialRule;
-                expectedRule.Name = updateRule.Name;
+                var fakeDefinition = JsonConvert.SerializeObject(new
+                {
+                    InputOperand = "$value",
+                    Operator = "=",
+                    ConstantOperand = "0"
+                });
+
+                var updateRule = new Rule {Definition = fakeDefinition};
+                var expectedRule = new Rule {Id = initialRule.Id, Name = initialRule.Name, Definition = updateRule.Definition};
 
                 // Act
                 var putResult = await controller.Put(id, updateRule);
