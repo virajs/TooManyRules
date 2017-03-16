@@ -27,12 +27,12 @@ namespace TooManyRules.Engine
             this.rulesRepository = rulesRepository;
         }
 
-        public EvaluationResult EvaluateRules(string ns, object input)
+        public EvaluationResult EvaluateRules(string policy, object input)
         {
             return new EvaluationResult();
         }
 
-        public EvaluationResult EvaluateRule(string ns, string name, object input)
+        public EvaluationResult EvaluateRule(string policy, string name, object input)
         {
             var result = new EvaluationResult();
 

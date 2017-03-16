@@ -1,4 +1,4 @@
-// Copyright 2017 Ryan Caille
+﻿// Copyright 2017 Ryan Caille
 //  
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 // files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
@@ -12,12 +12,17 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-namespace TooManyRules.Engine
+namespace TooManyRules.Engine.Evaluators
 {
-    public interface IRuleEngine
+    public abstract class BinaryEvaluator<T> : IEvaluate<T>
     {
-        EvaluationResult EvaluateRules(string policy, object input);
+        protected BinaryEvaluator(BinaryOperators op)
+        {
+            Operator = op;
+        }
 
-        EvaluationResult EvaluateRule(string policy, string name, object input);
+        public BinaryOperators Operator { get; }
+
+        public abstract bool Evaluate(T operand1, T operand2);
     }
 }
