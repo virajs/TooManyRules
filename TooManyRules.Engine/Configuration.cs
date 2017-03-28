@@ -23,7 +23,7 @@ namespace TooManyRules.Engine
     {
         public static void Configure(this IServiceCollection services)
         {
-            services.AddSingleton<IRuleEngine, RuleEngine>();
+            services.AddSingleton<IPolicyEngine, PolicyEngine>();
         }
     }
 }

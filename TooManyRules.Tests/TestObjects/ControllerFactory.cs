@@ -27,7 +27,8 @@ namespace TooManyRules.Tests.TestObjects
     internal class ControllerFactory : IDisposable
     {
         private readonly TooManyRulesContext context;
-        private readonly Mock<ILogger<RulesController>> mockLogger = new Mock<ILogger<RulesController>>();
+        private readonly Mock<ILogger<RulesController>> mockRulesLogger = new Mock<ILogger<RulesController>>();
+        private readonly Mock<ILogger<PoliciesController>> mockPoliciesLogger = new Mock<ILogger<PoliciesController>>();
 
         public ControllerFactory()
         {
@@ -56,12 +57,27 @@ namespace TooManyRules.Tests.TestObjects
 
         public RulesController CreateRulesController()
         {
-            return new RulesController(CreateRulesService(), mockLogger.Object);
+            return new RulesController(CreateRulesService(), mockRulesLogger.Object);
         }
 
-        public RuleEngine CreateRuleEngine()
+        public PolicyEngine CreateRuleEngine()
         {
-            return new RuleEngine(CreateRulesRepository());
+            return new PolicyEngine(new PoliciesRepository(context));
+        }
+
+        public PoliciesController CreatePoliciesController()
+        {
+            return new PoliciesController(CreatePoliciesService(), mockPoliciesLogger.Object);
+        }
+
+        private PoliciesService CreatePoliciesService()
+        {
+            return new PoliciesService(CreatePoliciesRepository());
+        }
+
+        private PoliciesRepository CreatePoliciesRepository()
+        {
+            return new PoliciesRepository(context);
         }
     }
 }

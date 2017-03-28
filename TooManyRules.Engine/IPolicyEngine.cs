@@ -14,10 +14,8 @@
 
 namespace TooManyRules.Engine
 {
-    public interface IRuleEngine
+    public interface IPolicyEngine
     {
-        EvaluationResult EvaluateRules(string policy, object input);
-
-        EvaluationResult EvaluateRule(string policy, string name, object input);
+        EvaluationResult EvaluatePolicy(string name, object input);
     }
 }

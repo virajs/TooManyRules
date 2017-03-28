@@ -13,11 +13,47 @@
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Newtonsoft.Json;
+using TooManyRules.Engine;
+using TooManyRules.Models;
+using TooManyRules.Tests.TestObjects;
+using Xunit;
 
 namespace TooManyRules.Tests
 {
     public class PasswordPolicyScenarioTests : IDisposable
     {
+        [Fact]
+        public async Task EvaluationMinPasswordLengthRule()
+        {
+            var definition = new RuleDefinition
+            {
+                InputOperand = "{password}",
+                Operator = ">=",
+                ConstantOperand = "8"
+            };
+
+            var policy = new Policy {Name = "Password Policy"};
+            policy.Rules.Add(new Rule
+            {
+                Name = "Min Password Length",
+                Definition = JsonConvert.SerializeObject(definition)
+            });
+
+            var factory = new ControllerFactory();
+
+            var controller = factory.CreatePoliciesController();
+            await controller.AddPolicy(policy);
+
+            var engine = factory.CreateRuleEngine();
+
+            var result = engine.EvaluatePolicy(policy.Name, "password");
+            result.Should().NotBeNull();
+            result.Success.Should().BeTrue();
+        }
+
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {

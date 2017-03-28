@@ -28,6 +28,6 @@ namespace TooManyRules.Models
         [Required]
         public string Definition { get; set; }
 
-        public IList<Rule> Rules { get; set; }
+        public IList<Rule> Rules { get; set; } = new List<Rule>();
     }
 }

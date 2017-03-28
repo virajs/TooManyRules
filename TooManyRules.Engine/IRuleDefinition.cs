@@ -12,39 +12,10 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 // IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System;
-using System.Linq;
-using TooManyRules.DataAccess;
-
 namespace TooManyRules.Engine
 {
-    internal class RuleEngine : IRuleEngine
+    public interface IRuleDefinition
     {
-        private readonly IRulesRepository rulesRepository;
-
-        public RuleEngine(IRulesRepository rulesRepository)
-        {
-            this.rulesRepository = rulesRepository;
-        }
-
-        public EvaluationResult EvaluateRules(string policy, object input)
-        {
-            return new EvaluationResult();
-        }
-
-        public EvaluationResult EvaluateRule(string policy, string name, object input)
-        {
-            var result = new EvaluationResult();
-
-            var rule = rulesRepository.FindBy(r =>
-                r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
-            if (rule != null)
-            {
-                result.Success = true;
-            }
-
-            return result;
-        }
+        (bool success, string failedRule) Evaluate(object value);
     }
 }
